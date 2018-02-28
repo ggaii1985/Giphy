@@ -1,0 +1,92 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bird Gifs</title>
+</head>
+
+<body>
+
+  <button data-bird="eagle"></button>
+  <button data-bird="hawk"></button>
+  <button data-bird="robin"></button>
+  <button data-bird="bluejay"></button>
+  <div id="gifs-appear-here">
+    <img src="placeholder-eagle" data-still="placeholder-eagle" data-animate="placeholder-eagle" data-state="still" class="gif">
+    <img src="placeholder-hawk" data-still="placeholder-hawk" data-animate="placeholder-hawk" data-state="still" class="gif">
+    <img src="placeholder-robin" data-still="placeholder-robin" data-animate="placeholder-robin" data-state="still" class="gif">
+    <img src="placeholderbluejay" data-still="placeholder-bluejay" data-animate="placeholder-bluejay" data-state="still" class="gif">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    // this project is in an unfinished state!!  I have completed what I could to date.
+    //I need another couple of days to properly complete.
+    // Today I determined positioning of the syntax is not where I will keep it.
+    // I'm giving you what I have to avoid a "zero" but it's not at all supposed to be complete.
+
+    // thanks
+
+
+
+
+    //above I created the button option for birds
+    // Creating javascript with an action of 
+    //clicking the button and then grab the data with this, declare the variable.
+
+    $("button").on("click", function() {
+      var bird = $(this).attr("data-bird");
+
+      //this gives the Url with the parameter search with my api key with a 10 limit
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        animal + "&api_key=SJ6MIddoYZdcbDxbBpAm07y0reivI2hr&limit=10";
+
+        //I'm creating an ajax request and having the response loaded to the results.
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .then(function(response) {
+          console.log(queryURL);
+          console.log(response);
+          var results = response.data;
+
+          // It has to review each result, store them and display it's rating.
+          for (var i = 0; i < results.length; i++) {
+            var birdDiv = $("<div>");
+            var p = $("<p>").text("Rating: " + results[i].rating);
+            var birdImage = $("<img>");
+
+
+            // Appending the paragraph and image tag to the animalDiv
+            birdDiv.append(p);
+            birdDiv.append(birdImage);
+
+
+            // sending it to HTML 
+            $("#gifs-appear-here").prepend(birdDiv);
+            // I to determine what state the elements are in, then change it to an animated state if it's still set it to animate else set it to still
+            $(".gif").on("click", function() {
+              Var state = $(this).attr("data-state");
+              if(state === "still") {
+                $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+              }
+            })
+          }
+        });
+    };
+  </script>
+</body>
+
+</html>
